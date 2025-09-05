@@ -1,31 +1,24 @@
 package com.example.expense_manager_backend.expense;
 
-import jakarta.persistence.*; //— standard Java package declaration (file location / namespace).
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
-import org.hibernate.annotations.NotFound;
-import java.math.BigDecimal; //— types used for money and date.
-import java.time.LocalDate; //— types used for money and date.
+import jakarta.validation.constraints.NotNull;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 
-@Entity                            //— marks this class as a JPA entity. JPA will map this class to a database table (by default table name = expense or Expense depending on the JPA provider). This is what makes the class persistable.
-public class Expense {             //— normal Java class that will represent a row in the expense table.
-    @Id                            //— marks the field used as the primary key in the database.
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //— tells the database to auto-generate the primary key value (commonly an auto-increment column). IDENTITY uses the database’s identity/auto-increment mechanism.
-    private Long id;                //— primary key type Long is common for DB keys.
-
+                           //— marks this class as a JPA entity. JPA will map this class to a database table (by default table name = expense or Expense depending on the JPA provider). This is what makes the class persistable.
+public class ExpenseRequest {             //— normal Java class that will represent a row in the expense table.
+                 //— primary key type Long is common for DB keys.
     @NotBlank                       //— validation rule (from Jakarta Bean Validation). @NotBlank means the string must be non-null and contain at least one non-whitespace character. Useful to ensure user provides a meaningful description.
     private String description;     //— the text description of the expense.
 
     @NotNull                        // prevents null amounts; @DecimalMin("0.0") prevents negative amounts (money shouldn’t be negative here). amount uses BigDecimal which is the correct type for currency to avoid floating-point rounding errors.
     @DecimalMin("0.0")
     private BigDecimal amount;      // precise numeric value for money.
-
-    @Enumerated(EnumType.STRING)    //— maps Java enum values to the database as strings (e.g., "FOOD", "TRANSPORT"). This is safer than storing ordinal numbers because it remains stable if you reorder enum entries.
+                               //— maps Java enum values to the database as strings (e.g., "FOOD", "TRANSPORT"). This is safer than storing ordinal numbers because it remains stable if you reorder enum entries.
     @NotNull
     private  ExpenseCategory category;
 
@@ -35,8 +28,6 @@ public class Expense {             //— normal Java class that will represent a
     private String notes;           //optional extra text.
 
     //Getters and setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id=id; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
